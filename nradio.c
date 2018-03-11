@@ -112,10 +112,11 @@ int main(void)
 
    mvprintw( 3,3, "1: FM Nord " );
    mvprintw( 5,3, "2: FM Mylene  " );
+   mvprintw( 7,3, "3: FM nradio networx " );
 
    attroff( A_REVERSE );
-
-   color_set( 7, NULL ); mvprintw( 12, 3 , "<Press Key>" );
+   color_set( 9, NULL ); 
+   mvprintw( 12, 3 , "<Press Key>" );
 
    color_set( 5, NULL ); 
    for( foo = 0 ; foo <= cols-1 ; foo++) 
@@ -135,6 +136,9 @@ int main(void)
    if      ( ch == '1' ) nruncmd( "  mplayer   http://listen.radionomy.com/FranceBleuNord947FM" );
 
    else if ( ch == '2' ) nruncmd( "  mplayer   "  );
+
+   else if ( ch == '3' ) nruncmd( " mplayer http://play.nradio.networx.bg:8018/ " );
+
    else if ( ch == 'q' ) nc_gameover = 1;
    else if ( ch ==  27 ) nc_gameover = 1;
   }
