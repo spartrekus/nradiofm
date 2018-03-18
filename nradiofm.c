@@ -1,9 +1,7 @@
 
-
 ////////////////////////////////////////////////////////////////////////////////////
 // Author: Spartrekus
 ////////////////////////////////////////////////////////////////////////////////////
-
 
 //////////////////////////////////////////
 //////////////////////////////////////////
@@ -43,6 +41,9 @@
 #include <stdlib.h>
 
 #include <ncurses.h>
+
+
+int soundcard_output = 0;
 
 void quit(void)
 {
@@ -129,18 +130,41 @@ int main(void)
    attroff( A_REVERSE );
    attron( A_BOLD );
    mvprintw( 0, cols/2-4 , " NRADIO " );
+   printw( " (Out:%d) ", soundcard_output );
 
    refresh();
-
    ch = getch(); 
-   if      ( ch == '1' ) nruncmd( "  mplayer   http://listen.radionomy.com/FranceBleuNord947FM" );
 
-   else if ( ch == '2' ) nruncmd( "  mplayer   "  );
+   if ( ch == '1' ) 
+   {
+       if ( soundcard_output == 0 )
+         nruncmd( " mplayer   http://listen.radionomy.com/FranceBleuNord947FM   " );
+       else if ( soundcard_output == 1 )
+         nruncmd( " mplayer  -vo null -ao alsa:device=hw=1,0     http://listen.radionomy.com/FranceBleuNord947FM   " );
+       //nruncmd( "  mplayer   http://listen.radionomy.com/FranceBleuNord947FM  " );
+   }
 
-   else if ( ch == '3' ) nruncmd( " mplayer http://play.nradio.networx.bg:8018/ " );
+   else if ( ch == '2' ) //nruncmd( "  mplayer   "  );
+         nruncmd( " mplayer    \"http://listen.radionomy.com/mylenefarmerwebradio\" " );
+
+   else if ( ch == '3' ) 
+   {
+       if ( soundcard_output == 0 )
+         nruncmd( " mplayer http://play.nradio.networx.bg:8018/ " );
+       else if ( soundcard_output == 1 )
+         nruncmd( " mplayer  -vo null -ao alsa:device=hw=1,0 http://play.nradio.networx.bg:8018/ " );
+   }
 
    else if ( ch == 'q' ) nc_gameover = 1;
    else if ( ch ==  27 ) nc_gameover = 1;
+
+   else if ( ch ==  '0' ) soundcard_output = 0;
+   else if ( ch ==  '#' ) 
+   {
+      if ( soundcard_output == 0 ) soundcard_output = 1 ; 
+      else  soundcard_output = 0 ; 
+   }
+
   }
 
   curs_set( 1 );
